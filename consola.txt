@@ -1,0 +1,7 @@
+tsc -w -- modo observador modo watch (typescript) para ejecutar el tsconfig.json -- HACE QUE FUNCIONE EL TS 
+
+al mismo tiempo en otro cmd : nodemon dist/
+
+
+OJO NOTA :::::: usar : --save-dev porque lo que se instalo no es parte del proyecto final solo es para desarrollo , porque es solo una dependencia de desarrollo 
+npm i --save-dev @types/express  --save-dev
