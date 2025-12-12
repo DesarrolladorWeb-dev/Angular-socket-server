@@ -4,8 +4,8 @@ import { SERVER_PORT } from "./global/enviroment";
 
 import bodyParser from "body-parser";
 import cors from "cors";
-
-const server = new Server();
+// tenemos solo esta instancia de la clase serve
+const server = Server.instance;
 
 // bodyparser - lo que sea lo que POSTen la info lo toma
 server.app.use(
@@ -21,5 +21,5 @@ server.app.use(cors({ origin: true, credentials: true }));
 server.app.use("/", router);
 
 server.start(() => {
-  console.log(`Servidor corriendo en el puerto${SERVER_PORT}`);
+  console.log(`PUERTO ${SERVER_PORT}`);
 });
