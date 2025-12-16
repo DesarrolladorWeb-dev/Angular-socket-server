@@ -26,13 +26,23 @@ export default class Server {
     console.log("Escuchando conexiones - sockets");
     // para detectar desde nuestro servidor si nuestro usuario se desconecta o se conecta
     this.io.on("connection", (cliente) => {
-      console.log("Cliente conectado");
+      // mostrara el id del socket  relacionado con el usuario
+      // console.log(cliente.id);
+
+      //Conectar Cliente
+      socket.conectarCliente(cliente, this.io);
+
+      // Configurar usuario
+      socket.configurarUsuario(cliente, this.io);
+
+      // Obtener usuarios activos - para cargar cada vez que ingresa en el listar-usuarios.components.ts del frontent y no este vacio al retroceder y volver a ingresar
+      socket.obtenerUsuarios(cliente, this.io);
 
       // Mensajes
-      socket.mensaje(cliente,this.io);
+      socket.mensaje(cliente, this.io);
 
       // Deconectar
-      socket.desconectar(cliente);
+      socket.desconectar(cliente, this.io);
     });
   }
   // para que solo exista una instancia solo uno de la clase
