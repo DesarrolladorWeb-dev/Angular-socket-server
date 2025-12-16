@@ -2,31 +2,36 @@ import { Router, Request, Response } from "express";
 import Server from "../classes/server";
 import { Socket } from "socket.io";
 import { usuariosConectados } from "../sockets/socket";
+import { GraficaData } from "../classes/grafica";
 
 const router = Router();
 
+const grafica = new GraficaData();
+
 // luego el handler
-router.get("/mensajes", (req: Request, res: Response) => {
-  res.json({
-    ok: true,
-    mensaje: "Todo esta bien!!",
-  });
+// "/mensajes
+router.get("/grafica", (req: Request, res: Response) => {
+  res.json(grafica.getDataGrafica());
 });
 
-router.post("/mensajes", (req: Request, res: Response) => {
-  const cuerpo = req.body.cuerpo;
-  const de = req.body.de;
-  const payload = { cuerpo, de };
+router.post("/grafica", (req: Request, res: Response) => {
+  // SOCKET DISPARADO DESDE UN SERVICIO REST
 
-  // desde el resp envio informacion a todos los conectados
+  const mes = req.body.mes;
+  // const cuerpo = req.body.cuerpo;
+
+  // const de = req.body.de;
+  const unidades = Number(req.body.unidades);
+  // const payload = { cuerpo, de };
+
+  grafica.incrementarValores(mes, unidades);
+
   const server = Server.instance;
-  server.io.emit("mensaje-nuevo", payload);
+  // desde el resp envio informacion a todos los conectados
+  // server.io.emit("mensaje-nuevo", payload);
+  server.io.emit("cambio-grafica", grafica.getDataGrafica());
 
-  res.json({
-    ok: true,
-    cuerpo,
-    de,
-  });
+  res.json(grafica.getDataGrafica());
 });
 
 router.post("/mensajes/:id", (req: Request, res: Response) => {
